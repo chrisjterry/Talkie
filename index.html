@@ -12,7 +12,8 @@
     <div>
         <h1>Talkie</h1>
         <div>
-            <button>Upload ▲</button>
+            <button id='upload-button' onclick="uploadFile()">Upload ▲</button>
+            <input type="file" id="upload-input" onchange="handleFile(event)">
             <button id='sample' onclick="initAnimation('./charlieChaplin.mp3')">Sample ▶</button>
         </div>
         <div>

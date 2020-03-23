@@ -42,3 +42,7 @@ i {
     color: white;
     margin: 15px 5px;
 }
+
+input {
+    display: none;
+}

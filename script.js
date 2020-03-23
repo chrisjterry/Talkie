@@ -80,3 +80,26 @@ const loopAnimation = () => {
 
     window.requestAnimationFrame(loopAnimation);
 };
+
+const uploadFile = () => {
+    document.getElementById('upload-input').click();
+};
+
+const handleFile = (e) => {
+    e.preventDefault();
+    const file = e.currentTarget.files[0];
+    const fileName = file.name.split('.');
+    
+    if (fileName[fileName.length - 1] !== 'mp3') {
+        window.alert('Please upload an mp3 file');
+        return;
+    }
+
+    const fileReader = new FileReader();
+
+    fileReader.onloadend = () => {
+        initAnimation(fileReader.result)
+    };
+
+    if (file) fileReader.readAsDataURL(file);
+};
