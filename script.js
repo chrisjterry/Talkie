@@ -11,7 +11,7 @@ const initPage = () => {
     ctx.stroke();
 };
 
-const initAnimation = (input) => {
+const initAnimation = input => {
     const audio = new Audio();
     const context = new (window.AudioContext || window.webkitAudioContext)();
     analyser = context.createAnalyser();
@@ -24,7 +24,7 @@ const initAnimation = (input) => {
     frequencyArray = new Uint8Array(analyser.frequencyBinCount);
     audio.play();
     loopAnimation(frequencyArray, analyser);
-    console.log(this)
+    changeEventHandlers(context);
 };
 
 const loopAnimation = () => {
@@ -85,7 +85,7 @@ const uploadFile = () => {
     document.getElementById('upload-input').click();
 };
 
-const handleFile = (e) => {
+const handleFile = e => {
     e.preventDefault();
     const file = e.currentTarget.files[0];
     const fileName = file.name.split('.');
@@ -102,4 +102,27 @@ const handleFile = (e) => {
     };
 
     if (file) fileReader.readAsDataURL(file);
+};
+
+const changeEventHandlers = context => {
+    const upload = document.getElementById('upload-button');
+    const sample = document.getElementById('sample');
+
+    const pausableUploadFile = () => {
+        context.suspend();
+        uploadFile();
+    }
+
+    const pausableInitAnimation = () => {
+        context.suspend();
+        initAnimation('./charlieChaplin.mp3');
+    }
+
+    upload.removeEventListener('click', uploadFile);
+    upload.removeEventListener('click', pausableUploadFile);
+    sample.removeEventListener('click', initAnimation);
+    sample.removeEventListener('click', pausableInitAnimation);
+
+    upload.addEventListener('click', pausableUploadFile);
+    sample.addEventListener('click', pausableInitAnimation);
 };
