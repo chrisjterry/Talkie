@@ -1,3 +1,16 @@
+const initPage = () => {
+    const canvas = document.getElementById('canvas');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const ctx = canvas.getContext("2d");
+
+    const middle = canvas.height / 2;
+    ctx.strokeStyle = 'white';
+    ctx.moveTo(0, middle);
+    ctx.lineTo(canvas.width, middle);
+    ctx.stroke();
+};
+
 const initAnimation = (input) => {
     const audio = new Audio();
     const context = new (window.AudioContext || window.webkitAudioContext)();
@@ -11,6 +24,7 @@ const initAnimation = (input) => {
     frequencyArray = new Uint8Array(analyser.frequencyBinCount);
     audio.play();
     loopAnimation(frequencyArray, analyser);
+    console.log(this)
 };
 
 const loopAnimation = () => {

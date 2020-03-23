@@ -4,15 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type='text/javascript' src='script.js' async defer></script>
+    <script src="https://kit.fontawesome.com/db153ab519.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles.css">
     <title>Talkie</title>
 </head>
-<body>
+<body onload="initPage()">
     <div>
         <h1>Talkie</h1>
         <div>
-            <button>Upload</button>
+            <button>Upload ▲</button>
             <button id='sample' onclick="initAnimation('./charlieChaplin.mp3')">Sample ▶</button>
+        </div>
+        <div>
+            <a href="https://github.com/chrisjterry/Talkie"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/christopher-terry/"><i class="fab fa-linkedin"></i></a>
         </div>
     </div>
     <canvas id='canvas'></canvas>
