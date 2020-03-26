@@ -43,47 +43,58 @@ const loopAnimation = () => {
 
     const middle = canvas.height / 2;
     const cycles = 100;
+    const offset = 5;
     const cycleWidth = canvas.width * .51 / cycles;
     let right = canvas.width * .49;
     let left = canvas.width * .51;
     let sign = 1;
-    let multiplier = 2;
+    const initMultiplier = 1.5;
+    const multiplierStep = 0.015; 
+    let multiplier = initMultiplier;
+    const initMax = frequencyArray[offset];
+    const maxStep = initMax / cycles;
+    let max = initMax;
 
     analyser.getByteFrequencyData(frequencyArray);
 
     ctx.strokeStyle = 'white';
     ctx.moveTo(right, middle);
-    for(let x = 0; x <= cycles; x ++) {
+    for(let x = offset; x <= cycles + offset; x ++) {
+        let current = frequencyArray[x];
         ctx.bezierCurveTo(
             right,
-            middle + frequencyArray[x] * sign * multiplier,
+            middle + ((current + max + max) / 3) * sign * multiplier,
             right + cycleWidth,
-            middle + frequencyArray[x] * sign * multiplier,
+            middle + ((current + max + max) / 3) * sign * multiplier,
             right + cycleWidth,
             middle
         );
         ctx.stroke();
         right += cycleWidth;
-        multiplier -= .02;
+        multiplier -= multiplierStep;
         sign *= -1;
+        max -= maxStep;
     }
 
-    sign = -1;
-    multiplier = 2;
+    sign = 1;
+    multiplier = initMultiplier;
+    max = initMax;
     ctx.moveTo(left, middle)
     for(let x = 0; x <= cycles; x ++) {
+        let current = frequencyArray[x];
         ctx.bezierCurveTo(
             left,
-            middle + frequencyArray[x] * sign * multiplier,
+            middle + ((current + max + max) / 3) * sign * multiplier,
             left - cycleWidth,
-            middle + frequencyArray[x] * sign * multiplier,
+            middle + ((current + max + max) / 3) * sign * multiplier,
             left - cycleWidth,
             middle
         );
         ctx.stroke();
         left -= cycleWidth;
-        multiplier -= .02;
+        multiplier -= multiplierStep;
         sign *= -1;
+        max -= maxStep;
     }
 
     window.requestAnimationFrame(loopAnimation);

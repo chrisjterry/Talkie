@@ -38,6 +38,10 @@ button:hover {
     cursor: pointer;
 }
 
+.button-div i {
+    font-size: 95%;
+}
+
 .link-div i {
     color: white;
     margin: 15px 5px;
