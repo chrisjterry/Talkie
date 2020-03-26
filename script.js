@@ -1,4 +1,12 @@
 const initPage = () => {
+    const input = document.getElementById('upload-input');
+    const upload = document.getElementById('upload-button');
+    const sample = document.getElementById('sample');
+
+    input.addEventListener('change', handleFile);
+    upload.addEventListener('click', uploadFile);
+    sample.addEventListener('click', playSample);
+    
     const canvas = document.getElementById('canvas');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -24,7 +32,7 @@ const initAnimation = input => {
     frequencyArray = new Uint8Array(analyser.frequencyBinCount);
     audio.play();
     loopAnimation(frequencyArray, analyser);
-    changeEventHandlers(context);
+    changeEventHandlers(audio);
 };
 
 const loopAnimation = () => {
@@ -81,6 +89,10 @@ const loopAnimation = () => {
     window.requestAnimationFrame(loopAnimation);
 };
 
+const playSample = () => {
+    initAnimation('./charlieChaplin.mp3');
+}
+
 const uploadFile = () => {
     document.getElementById('upload-input').click();
 };
@@ -104,25 +116,50 @@ const handleFile = e => {
     if (file) fileReader.readAsDataURL(file);
 };
 
-const changeEventHandlers = context => {
+const changeEventHandlers = audio => {
+    const input = document.getElementById('upload-input');
     const upload = document.getElementById('upload-button');
     const sample = document.getElementById('sample');
 
-    const pausableUploadFile = () => {
-        context.suspend();
-        uploadFile();
+    const handleNewFile = e => {
+        e.preventDefault();
+        const file = e.currentTarget.files[0];
+        const fileName = file.name.split('.');
+        
+        if (fileName[fileName.length - 1] !== 'mp3') {
+            window.alert('Please upload an mp3 file');
+            return;
+        }
+    
+        const fileReader = new FileReader();
+    
+        fileReader.onloadend = () => {
+            audio.src = fileReader.result;
+            audio.load();
+            audio.play();
+        };
+    
+        if (file) fileReader.readAsDataURL(file);    
     }
 
-    const pausableInitAnimation = () => {
-        context.suspend();
-        initAnimation('./charlieChaplin.mp3');
+    const uploadNewFile = () => {
+        audio.pause();
+        input.value = ''
+        input.click();
     }
 
+    const replaySample = () => {
+        audio.pause();
+        audio.src = './charlieChaplin.mp3';
+        audio.load();
+        audio.play();
+    }
+
+    input.removeEventListener('change', handleFile);
     upload.removeEventListener('click', uploadFile);
-    upload.removeEventListener('click', pausableUploadFile);
-    sample.removeEventListener('click', initAnimation);
-    sample.removeEventListener('click', pausableInitAnimation);
+    sample.removeEventListener('click', playSample);
 
-    upload.addEventListener('click', pausableUploadFile);
-    sample.addEventListener('click', pausableInitAnimation);
+    input.addEventListener('change', handleNewFile);
+    upload.addEventListener('click', uploadNewFile);
+    sample.addEventListener('click', replaySample);
 };
