@@ -38,7 +38,7 @@ button:hover {
     cursor: pointer;
 }
 
-i {
+.link-div i {
     color: white;
     margin: 15px 5px;
 }

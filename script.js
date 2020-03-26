@@ -120,6 +120,7 @@ const changeEventHandlers = audio => {
     const input = document.getElementById('upload-input');
     const upload = document.getElementById('upload-button');
     const sample = document.getElementById('sample');
+    const pause = document.getElementById('pause');
 
     const handleNewFile = e => {
         e.preventDefault();
@@ -155,11 +156,21 @@ const changeEventHandlers = audio => {
         audio.play();
     }
 
+    const togglePause = () => {
+        if (audio.paused) {
+            audio.play();
+        } else {
+            audio.pause();
+        }
+    }
+
     input.removeEventListener('change', handleFile);
     upload.removeEventListener('click', uploadFile);
     sample.removeEventListener('click', playSample);
+    pause.removeEventListener('click', togglePause);
 
     input.addEventListener('change', handleNewFile);
     upload.addEventListener('click', uploadNewFile);
     sample.addEventListener('click', replaySample);
+    pause.addEventListener('click', togglePause);
 };
